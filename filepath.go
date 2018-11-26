@@ -39,8 +39,8 @@ func getDocuments(w http.ResponseWriter, r *http.Request) {
 	var tmp Document
 	
 
-	root := "\\gitexercises\\go.exercises\\ToursOfGo"
-	//root := "."
+	//root := "\\gitexercises\\go.exercises\\ToursOfGo"
+	root := "."
 	
 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
