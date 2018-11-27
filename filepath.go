@@ -34,6 +34,12 @@ func hash_file_md5(filePath string) (string, error) {
 	return returnMD5String, nil
 }
 
+func genIDmd5(fileOpen string) string{
+	hasher := md5.New()
+	hasher.Write([]byte(fileOpen))
+	return string(hex.EncodeToString(hasher.Sum(nil)))
+}
+
 func getDocuments(w http.ResponseWriter, r *http.Request) {
 	var files []Document
 	var tmp Document
@@ -45,10 +51,12 @@ func getDocuments(w http.ResponseWriter, r *http.Request) {
 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		
-		id, err1 := hash_file_md5(path)
-		if err1 != nil {
-			panic(err1)
-		}
+		//id, err1 := hash_file_md5(path)
+		//if err1 != nil {
+		//	panic(err1)
+		//}
+
+		id := genIDmd5(path)
 
 		tmp = Document{ID : id, Name: info.Name(), Size: info.Size()}
 		files = append(files, tmp)
