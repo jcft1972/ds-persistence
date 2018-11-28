@@ -40,6 +40,26 @@ func genIDmd5(fileOpen string) string{
 	return string(hex.EncodeToString(hasher.Sum(nil)))
 }
 
+func cpFile(path string) (Document, error) {
+	var nameFile string
+	fileIn, err := os.Open(path)
+	check(err)
+	nameFile = "Copy-" + fileIn.Name()
+	defer fileIn.Close()
+	fileOut, err := os.Create(nameFile)
+	check(err)
+	defer fileOut.Close()
+	_, err = io.Copy(fileOut, fileIn)
+	check(err)
+
+	return Document{ID: genIDmd5(fileOut.Name()), Name: fileOut.Name(), Size: 0}, fileOut.Close()
+}
+
+func rmFile(path string) error {
+	err := os.Remove(path)
+	check(err)
+	return err
+}
 
 func listFiles(root string) ([]Document, error){
 

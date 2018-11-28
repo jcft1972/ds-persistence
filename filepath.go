@@ -41,11 +41,20 @@ func GetDocumentByID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&Document{})
 }
 
-func CreateDocumentById(w http.ResponseWriter, r *http.Request){
 
+func CreateDocumentById(w http.ResponseWriter, r *http.Request){
+	params := mux.Vars(r)
+	file, err := cpFile(params["id"])
+	check(err)
+	json.NewEncoder(w).Encode(file)
 }
 
-func DeletetDocumentById(w http.ResponseWriter, r *http.Request){}
+func DeletetDocumentById(w http.ResponseWriter, r *http.Request){
+	params := mux.Vars(r)
+	err := rmFile(params["id"])
+	check(err)
+	json.NewEncoder(w).Encode(&Document{})
+}
 
 
 // func main () {
