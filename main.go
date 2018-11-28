@@ -6,19 +6,22 @@ import (
 	"github.com/gorilla/mux"
 	"encoding/json"
 )
-type Document struct {
-	ID string
-	Name string
-	Size int
-}
+// type Document struct {
+// 	ID string
+// 	Name string
+// 	Size int
+// }
 
 func main(){
 	router := mux.NewRouter()
 	router.HandleFunc("/documents", getDocuments).Methods("GET")
+	router.HandleFunc("/documents/{id}", GetDocumentByID).Methods("GET")
+	router.HandleFunc("/documents/{id}", CreateDocumentById).Methods("POST")
+	router.HandleFunc("/documents/{id}", DeletetDocumentById).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":9000", router))
 }
 
-func getDocuments(w http.ResponseWriter, r *http.Request) {
+func getDocumentsPrueba(w http.ResponseWriter, r *http.Request) {
 	
 	var docs []Document
 	docs = append(docs, Document{ID: "doc-1", Name: "Report.docx", Size: 1500})
@@ -27,7 +30,5 @@ func getDocuments(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(docs)
-	
-
 	
 }
